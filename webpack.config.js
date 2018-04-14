@@ -7,6 +7,7 @@ module.exports = {
 
   //1. entry
   entry: path.join(__dirname,'./src/js/main.js'),
+  // entry: path.join(__dirname,'./components/CommentList.js'),
 
   //2. output
   output:{

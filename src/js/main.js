@@ -1,30 +1,55 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-class ChildComponent extends React.Component {
-    constructor(props) {
-        super(props)
-        
-        this.state = {
-            initCount:props.count,
+import PropTypes from 'prop-types'
+
+class Grandfather extends React.Component {
+    static childContextTypes = {
+        color: PropTypes.string.isRequired
+    }
+
+    //传递给孙子组件的数据
+    getChildContext() {
+        return {
+            color: 'red'
         }
     }
 
     render() {
         return (
             <div>
-                <h1>打豆豆的次数:{this.state.initCount}</h1>
-                <button onClick={(e) => { this.ml_clickCounter(e) }}>开始打豆豆</button>
+                <Father></Father>
             </div>
         )
     }
+}
 
-    ml_clickCounter(){
-        this.setState({
-            initCount:this.state.initCount + 1
-        })
+//儿子组件
+class Child extends React.component {
+    //类型限制,静态属性名字固定 context（全局的上下文）
+    static contextTypes = {
+        color: PropTypes.string
+    }
+
+    render() {
+        return (
+            <div>
+                <h1 style={{ color: this.context.color }}>爷爷告诉文字是红色的</h1>
+            </div>
+        )
     }
 }
 
+//爸爸组件
+class Father extends React.Component {
+    render() {
+        return (
+            <div>
+                <Child></Child>
+            </div>
+        )
+    }
+}
 
-ReactDOM.render(<ChildComponent count={0} ></ChildComponent>, document.getElementById('app'))
+ReactDOM.render(<Grandfather></Grandfather>, document.getElementById('app'))
+
